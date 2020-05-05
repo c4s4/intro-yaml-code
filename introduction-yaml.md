@@ -19,48 +19,27 @@ An [english version is available here](http://sweetohm.net/article/introduction-
 
 On trouvera une archive ZIP avec cet article au format PDF ainsi que les exemples à l'adresse : [http://www.sweetohm.net/arc/introduction-yaml.zip](http://www.sweetohm.net/arc/introduction-yaml.zip).
 
-Qu'est ce que YAML ?
-====================
+# Qu'est ce que YAML ?
 
 Le nom YAML veut dire "YAML Ain't Markup Language", soit "YAML n'est pas un langage de balises". Si cela met d'emblée des distances avec XML, cela ne nous dit pas ce qu'est YAML. YAML est, [d'après sa spécification](http://yaml.org/spec/1.2/spec.html), un langage de sérialisation de données conçu pour être lisible par des humains et travaillant bien avec les langage de programmation modernes pour les tâches de tous les jours.
 
 Concrètement, on pourrait noter la liste des ingrédients pour un petit déjeuner de la manière suivante :
 
-```yaml
-- croissants
-- chocolatines
-- jambon
-- oeufs
-```
+```yaml/1.yml```
 
 Ceci est un fichier YAML valide qui représente une liste de chaînes de caractères. Pour s'en convaincre, nous pouvons écrire le script Python suivant qui parse le fichier, dont le nom est passé sur la ligne de commande, et affiche le résultat :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import sys
-import yaml
-
-print yaml.load(open(sys.argv[1]))
-```
+```python/1.py```
 
 Ce script produira le résultat suivant :
 
-```yaml
-['croissants', 'chocolatines', 'jambon', 'oeufs']
-```
+```yaml/2.yml```
 
 Ce qui veut dire que le résultat de ce parsing est une liste Python contenant les chaînes de caractères appropriées ! Le parseur est donc capable de restituer des structures de données *naturelles* du langage utilisé pour le parsing.
 
 Écrivons maintenant un compte à rebours :
 
-```yaml
-- 3
-- 2
-- 1
-- 0
-```
+```yaml/3.yml```
 
 Nous obtenons le résultat suivant :
 
@@ -72,12 +51,7 @@ C'est toujours une liste, mais le parseur a reconnu chaque élément comme étan
 
 YAML peut aussi reconnaître des tableaux associatifs, ainsi on pourrait noter une commande de petit déjeuner de la manière suivante :
 
-```yaml
-croissants: 30
-chocolatines: 30
-jambon: 0
-oeufs: 0
-```
+```yaml/4.yml```
 
 Qui sera chargé de la manière suivante :
 
@@ -89,21 +63,7 @@ En combinant les types de données de base dans les collections reconnues par YA
 
 Il est aussi possible de réaliser l'opération inverse, à savoir sérialiser des structures de données en mémoire sous forme de texte. Dans l'exemple suivant, nous écrivons sur la sortie standard un `Dictionnaire` Python :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-recette = {
-    'nom': 'sushi',
-    'ingredients': ['riz', 'vinaigre', 'sucre', 'sel', 'thon', 'saumon'],
-    'temps de cuisson': 10,
-    'difficulte': 'difficile'
-}
-
-print yaml.dump(recette)
-```
+```python/2.py```
 
 Qui produira la sortie suivante :
 
@@ -114,13 +74,11 @@ nom: sushi
 temps de cuisson: 10
 ```
 
-Syntaxe de base
-===============
+# Syntaxe de base
 
 Après cette brève introduction, voici une description plus exhaustive de la syntaxe YAML.
 
-Scalaires
----------
+## Scalaires
 
 Les scalaires sont l'ensemble des types YAML qui ne sont pas des collections (liste ou tableau associatif). Ils peuvent être représentés par une liste de caractères Unicode. Voici une liste des scalaires reconnus par les  parseurs YAML :
 
@@ -128,14 +86,7 @@ Les scalaires sont l'ensemble des types YAML qui ne sont pas des collections (li
 
 Voici un exemple :
 
-```yaml
-- Chaîne
-- "3"
-- Chaîne sur
-  une ligne
-- "Guillemets doubles\t"
-- 'Guillemets simples\t'
-```
+```yaml/5.yml```
 
 Qui est parsé de la manière suivante :
 
@@ -162,13 +113,7 @@ D'autre part, il est possible d'écrire des caractères Unicode à l'aide des no
 
 Voici quelques exemples :
 
-```yaml
-canonique:   12345
-decimal:     +12_345
-sexagesimal: 3:25:45
-octal:       030071
-hexadecimal: 0x3039
-```
+```yaml/6.yml```
 
 Qui est parsé de la manière suivante :
 
@@ -183,14 +128,7 @@ Nous constatons que les notations les plus courantes des langages de programmati
 
 Voyons les différentes notations pour ces nombres :
 
-```yaml
-canonique:      1.23015e+3
-exponentielle:  12.3015e+02
-sexagesimal:    20:30.15
-fixe:           1_230.15
-infini negatif: -.inf
-pas un nombre:  .NaN
-```
+```yaml/7.yml```
 
 Ce qui est parsé en :
 
@@ -206,12 +144,7 @@ Les notations classiques sont gérées ainsi que les infinis et les valeurs qui 
 
 YAML reconnaît aussi des dates :
 
-```yaml
-canonique: 2001-12-15T02:59:43.1Z
-iso8601:   2001-12-14t21:59:43.10-05:00
-espace:    2001-12-14 21:59:43.10 -5
-date:      2002-12-14
-```
+```yaml/8.yml```
 
 Qui sont parsées de la manière suivante :
 
@@ -228,16 +161,7 @@ Les types résultant du parsing dépendent du langage et du parseur, mais corres
 
 Il existe d'autres scalaires reconnus par les parseurs YAML :
 
-```yaml
-nul: null
-nul bis: ~
-vrai: true
-vrai bis: yes
-vrai ter: on
-faux: false
-faux bis: no
-faux ter: off
-```
+```yaml/9.yml```
 
 Qui sera parsé en :
 
@@ -257,21 +181,13 @@ Il existe deux types de collections reconnues par YAML : les listes et les table
 
 Ce sont des listes ordonnées, et qui peuvent contenir plusieurs éléments identiques (par opposition aux ensembles). Les éléments d'une liste sont identifiés par un tiret, comme suit :
 
-```yaml
-- croissants au
-  beurre
-- chocolatines
-- jambon
-- oeufs
-```
+```yaml/10.yml```
 
 Les éléments de la liste sont distingués grâce à l'indentation : le premier élément est indenté de manière à ce que sa deuxième ligne soit reconnue comme faisant partie du premier élément de la liste. Cette syntaxe peut être comparée à celle de Python, si ce n'est qu'en YAML, **les caractères de tabulation sont strictement interdits pour l'indentation**. Cette dernière règle est importante et source de nombreuses erreurs de parsing. Il est important de paramétrer son éditeur de manière à interdire les tabulations pour l'indentation des fichiers YAML.
 
 Il existe une notation alternative pour les listes, semblable à celle des langages Python ou Ruby :
 
-```yaml
-[croissants, chocolatines, jambon, oeufs]
-```
+```yaml/11.yml```
 
 Cette notation, dite *en flux*, est plus compacte et permet parfois de gagner en lisibilité ou compacité.
 
@@ -279,18 +195,11 @@ Cette notation, dite *en flux*, est plus compacte et permet parfois de gagner en
 
 Appelés Map ou Dictionnaires dans certains langages, ils associent une valeur à une clef :
 
-```yaml
-croissants: 2
-chocolatines: 1
-jambon: 0
-oeufs: 3
-```
+```yaml/12.yml```
 
 La notation *en flux* est la suivante :
 
-```yaml
-{ croissants: 2, chocolatines: 1, jambon: 0, oeufs: 3}
-```
+```yaml/13.yml```
 
 Qui est parsé de la même manière. Cette notation est identique à celle de Python ou Javascript et se rapproche de celle utilisée par Ruby. A noter qu'il est question que Ruby 2 utilise aussi cette notation.
 
@@ -298,12 +207,7 @@ Qui est parsé de la même manière. Cette notation est identique à celle de Py
 
 Il est possible d'inclure des commentaires dans un document de la même manière que dans la plupart des langages de script :
 
-```yaml
-# commentaire
-- Du texte
-# autre commentaire
-- Autre texte
-```
+```yaml/14.yml```
 
 A noter que ces commentaires ne doivent (et ne peuvent) contenir d'information utile au parsing dans la mesure où ils ne sont pas accessibles, généralement, au code client du parser.
 
@@ -311,38 +215,21 @@ A noter que ces commentaires ne doivent (et ne peuvent) contenir d'information u
 
 Dans un même fichier ou flux, on peut insérer plusieurs documents YAML å la suite, en les faisant commencer par une ligne composée de trois tirets (`---`) et en les termiant d'une ligne de trois points (`...`) comme dans l'exemple ci-dessous :
 
-```yaml
----
-premier document
-...
----
-deuxième document
-...
-```
+```yaml/15.yml```
 
 A noter que par défaut, les parsers YAML attendent un document par fichier et peuvent émettre une erreur s'ils rencontrent plus d'un document. Il faut alors utiliser une fonction particulière capable de parser des documents multiples (comme `yaml.load_all()` pour PyYaml par exemple).
 
 On peut alors extraire ces documents de manière séquentielle du flux.
 
-Syntaxe avancée
-===============
+# Syntaxe avancée
 
 Avec la section précédente, nous avons vu le minimum vital pour se débrouiller avec YAML. Nous allons maintenant aborder des notions plus avancées dont on peut souvent se passer dans un premier temps.
 
-Références
-----------
+## Références
 
 Les références YAML sont semblables aux pointeurs des langages de programmation. Par exemple :
 
-```yaml
-lundi:    &p 'des patates'
-mardi:    *p
-mercredi: *p
-jeudi:    *p
-vendredi: *p
-samedi:   *p
-dimanche: *p
-```
+```yaml/16.yml```
 
 Donne, après parsing :
 
@@ -355,27 +242,13 @@ Donne, après parsing :
 
 A noter qu'un alias, indiqué par une astérisque `*`, doit pointer vers une ancre valide, indiquée par une esperluette `&`, sans quoi il en résulte une erreur de parsing. Ainsi le fichier suivant doit provoquer une erreur lors du parsing :
 
-```yaml
-*foo
-```
+```yaml/17.yml```
 
-Tags
-----
+## Tags
 
 Les tags sont les indicateurs du type de données. Par défaut, il n'est pas nécessaire d'indiquer le type des données qui est déduit de leur forme. Cependant, dans certains cas, il peut être nécessaire de forcer le type d'une donnée et YAML définit les types par défaut suivants :
 
-```yaml
-null:     !!null
-integer:  !!int    3
-float:    !!float  1.2
-string:   !!str    string
-boolean:  !!bool   true
-binary:   !!binary dGVzdA==
-map:      !!map    { key: value }
-seq:      !!seq    [ element1, element2 ]
-ensemble: !!set    { element1, element2 }
-omap:     !!omap   [ key: value ]
-```
+```yaml/18.yml```
 
 Les tags correspondants commencent par deux points d'exclamation. Lors du parsing, on obtient les type suivants en Python :
 
@@ -401,32 +274,15 @@ L'utilité des tags pour ces types par défaut est limitée. La vrai puissance d
 
 Par exemple, on pourrait définir son propre type pour les personnes, comportant deux champs : le nom et le prénom. On doit tout d'abord déclarer le tag au début du document, puis on peut l'utiliser dans la suite, comme dans cet exemple :
 
-```yaml
-%TAG !personne! tag:foo.org,2004:bar
----
-- !personne
-    nom:    Simpson
-    prenom: Omer
-- !personne
-    nom:    Simpson
-    prenom: Bart
-```
+```yaml/19.yml```
 
 Nous verrons plus loin comment utiliser les tags avec les APIs Java et Python pour désérialiser des structures YAML en types de donnés personnalisés.
 
 Il est aussi possible de ne pas déclarer le tag et de l'expliciter dans le document, de la manière suivante :
 
-```yaml
-- !<tag:foo.org,2004:bar>
-    nom:    Simpson
-    prenom: Omer
-- !<tag:foo.org,2004:bar>
-    nom:    Simpson
-    prenom: Bart
-```
+```yaml/20.yml```
 
-Directives
-----------
+## Directives
 
 Les directives donnent des instructions au parser. Il en existe deux :
 
@@ -438,26 +294,19 @@ Comme vu précédemment, déclare un tag dans le document.
 
 Indique la version de YAML du document. Doit être en en-tête du document, comme dans l'exemple ci-dessous :
 
-```yaml
-%YAML 1.1
----
-test
-```
+```yaml/21.yml```
 
 Un parser doit refuser de traiter un document d'une version majeure supérieure. Par exemple, un parser `1.1` devrait refuser de parser un document en version YAML `2.0`. Il devrait émettre un warning si on lui demande de parser un document de version mineure supérieure, comme `1.2` par exemple. Il doit parser sans protester toutes les versions égales ou inférieures, telles que `1.1` et `1.0`.
 
-Jeu de caractères et encodage
------------------------------
+## Jeu de caractères et encodage
 
 Un parser YAML doit accepter tout caractère Unicode, à l'exception de certains [caractères spéciaux](http://yaml.org/spec/current.html#id2513160). Ces caractères peuvent être encodés en *UTF-8* (encodage par défaut), *UTF-16* ou *UTF-32*. Les parsers YAML sont capables de déterminer l'encodage du texte en examinant le premier caractère. Il est donc **impossible** d'utiliser tout autre encodage dans un fichier YAML et en particulier `ISO-8859-1`.
 
-APIs YAML
-=========
+# APIs YAML
 
 Nous allons maintenant jouer avec les principales APIs YAML.
 
-JYaml
------
+## JYaml
 
 JYaml est une bibliothèque OpenSource pour manipuler les documents YAML en Java. Le projet est hébergé par SourceForge et on trouvera sa page à l'adresse [http://jyaml.sourceforge.net/](http://jyaml.sourceforge.net/). On trouvera sur ce site [un tutoriel](http://jyaml.sourceforge.net/tutorial.html) ainsi que les [références de l'API](http://jyaml.sourceforge.net/javadoc/index.html).
 
@@ -473,31 +322,11 @@ Object object = Yaml.load(new File("object.yml"));
 
 Par exemple, le fichier suivant :
 
-```yaml
-- Un
-- 2
-- { trois: 3.0, quatre: true }
-```
+```yaml/22.yml```
 
 Pourra être chargé en mémoire et affiché dans le terminal avec le source suivant :
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Load {
-    
-    public static void main(String[] args)
-        throws Exception {
-        String filename = "test/object.yml";
-        if (args.length > 0) filename = args[0];
-        System.out.println(Yaml.load(new File(filename)));
-    }
-
-}
-```
+```java/1.java```
 
 Cela affichera dans le terminal :
 
@@ -513,43 +342,11 @@ Yaml.dump(object, new File("dump.yml"));
 
 Ainsi, on pourra par exemple sérialiser une structure d'objets Java avec le code suivant :
 
-```java
-package jyaml;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.ho.yaml.Yaml;
-
-public class Dump {
-
-    public static void main(String[] args)
-        throws Exception {
-        List<Object> object = new ArrayList<Object>();
-        object.add("Un");
-        object.add(2);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("trois", 3.0);
-        map.put("quatre", true);
-        object.add(map);
-        Yaml.dump(object, new File("test/dump.yml"));
-    }
-
-}
-```
+```java/2.java```
 
 Ce code produira le fichier suivant :
 
-```yaml
---- 
-- Un
-- 2
-- !java.util.HashMap
-  quatre: true
-  trois: !java.lang.Double 3.0
-```
+```yaml/23.yml```
 
 A noter que ce dump est un peu décevant dans la mesure où certains types standards de YAML (comme les tableaux associatifs et les nombres à virgule flottante) sont sérialisés en types Java (comme `java.util.HashMap` et `java.lang.Double`). Un tel fichier ne sera pas chargé correctement en utilisant un autre langage de programmation (voire même une autre implémentation en Java).
 
@@ -559,103 +356,15 @@ Nous pouvons aussi travailler avec des types qui ne sont pas génériques et ain
 
 La première solution consiste à indiquer le type des objets avec des tags YAML. Ainsi, le fichier YAML suivant :
 
-```yaml
---- !jyaml.Commande
-id: test123
-articles:
- - !jyaml.Article
-    id:       test456
-    prix:     3.5
-    quantite: 1
- - !jyaml.Article
-    id:       test567
-    prix:     2.0
-    quantite: 2
-```
+```yaml/24.yml```
 
 Sera-t-il chargé en utilisant les classes suivantes :
 
-```java
-package jyaml;
-
-public class Commande {
-
-    private String id;
-    private Article[] articles;
-
-    public String getId() {
-        return id;
-    }
-    
-    public void setId(String id) {
-        this.id = id;
-    }
-    
-    public Article[] getArticles() {
-        return articles;
-    }
-    
-    public void setArticles(Article[] articles) {
-        this.articles = articles;
-    }
-    
-    public String toString() {
-        StringBuffer buffer = new StringBuffer("[Commande id='")
-            .append(id)
-            .append("', articles='");
-        for (int i=0; i<articles.length; i++) {
-            Article article = articles[i];
-            buffer.append(article.toString());
-            if (i<articles.length-1) buffer.append(", ");
-        }
-        buffer.append("]");
-        return buffer.toString();
-    }
-
-}
-```
+```java/3.java```
 
 Et :
 
-```java
-package jyaml;
-
-public class Article {
-    
-    private String id;
-    private double prix;
-    private int quantite;
-    
-    public String getId() {
-        return id;
-    }
-        
-    public void setId(String id) {
-        this.id = id;
-    }
-       
-    public double getPrix() {
-        return prix;
-    }
-        
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-    
-    public int getQuantite() {
-        return quantite;
-    }
-        
-    public void setQuantite(int quantite) {
-        this.quantite = quantite;
-    }
-        
-    public String toString() {
-        return "[Article id='"+id+"', prix='"+prix+"', quantite='"+quantite+"']";
-    }
-  
-}
-```
+```java/4.java```
 
 Ces classes respectent la convention JavaBean, à savoir qu'elles disposent d'accesseurs pour ses champs ainsi que d'un constructeur vide (sans arguments, implicite en Java). En le chargeant avec le source précédent, nous obtenons sur le terminal :
 
@@ -669,35 +378,11 @@ Ces classes respectent la convention JavaBean, à savoir qu'elles disposent d'ac
 
 Il existe une autre solution pour charger ces objets sans avoir besoin de spécifier explicitement les types. Pour ce faire, il faut utiliser la méthode `loadType()` et lui passer le fichier YAML à charger ainsi que le type de l'objet racine du fichier. Ainsi, dans notre cas, nous pourrions écrire le fichier de commande de la manière suivante :
 
-```yaml
-id: test123
-articles:
- - id:       test456
-   prix:     3.5
-   quantite: 1
- - id:       test567
-   prix:     2.0
-   quantite: 2
-```
+```yaml/25.yml```
 
 Et le charger avec le source suivant :
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Load2 {
-        
-    public static void main(String[] args)
-        throws Exception {
-        System.out.println(Yaml.loadType(new File("test/commande2.yml"),
-                                         Commande.class));
-    }
-
-}
-```
+```java/5.java```
 
 Cette manière de charger des types spécifiques est bien plus pratique car elle ne surcharge pas le fichier YAML avec les types Java, ce qui rend la portabilité entre langages nulle. Cependant, on pourra regretter l'obligation de déclarer le champ `articles` en tant que tableau d'`Article`. Si on le déclare du type `List<Article>`, JYaml charge les objets de la liste comme des instances de `Map`. Cependant, ceci est du au fait que l'information du type de la liste est perdu au runtime et donc JYaml ne peut connaître le type des éléments de la liste et les charge donc avec le type par défaut.
 
@@ -705,44 +390,11 @@ Cette manière de charger des types spécifiques est bien plus pratique car elle
 
 JYaml gère les alias et les ancres des fichiers YAML. Prenons l'exemple suivant :
 
-```yaml
-- &rob
-  nom: Robert
-  age: 55
-- &elo
-  nom: Elodie
-  age: 52
-- nom: Mickael
-  age: 31
-  parents:
-    - *rob
-    - *elo
-```
+```yaml/26.yml```
 
 On peut le charger avec le source suivant :
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Alias {
-    
-    public static void main(String[] args)
-        throws Exception {
-        Personne[] personnes = Yaml.loadType(new File("test/alias.yml"),
-                                             Personne[].class);
-        for(int i=0; i<personnes.length; i++) {
-            Personne personne = personnes[i];
-            System.out.println(personne);
-        }
-        // on teste que les références sont bien identiques
-        System.out.println("Ancre OK: "+(personnes[2].getParents()[0]==personnes[0]));
-    }
-
-}
-```
+```java/6.java```
 
 Et l'on constate que les alias et ancres ont été gérés correctement.
 
@@ -791,17 +443,7 @@ for(Object object: Yaml.loadStream(input)) {
 
 Il est possible de configurer JYaml dans un fichier, qui doit être nommé `jyaml.yml` et se trouver dans le répertoire courant où tourne l'application ou bien à la racine de son *CLASSPATH*. Voici un exemple d'un tel fichier :
 
-```yaml
-minimalOutput: true
-indentAmount: "    "
-suppressWarnings: true
-encoding: "ISO-8859-1"
-transfers:
-  company: com.blah.Company
-  employee: com.blah.Employee
-handlers:
-  com.mycompany.MyFunkyObject: com.mycompany.jyaml.MyFunkyObjectWrapper
-```
+```yaml/27.yml```
 
 Cette configuration permet en particulier de configurer des mappings entre tags YAML et classes Java. Dans l'exemple ci-dessus, le mapping suivant :
 
@@ -822,8 +464,7 @@ A noter que JYaml a plus à offrir, en particulier :
 
 Cependant, JYaml semble soufrir de limitations, en particulier pour le parsing des dates qui ne sont pas toujours reconnues comme telles.
 
-PyYAML
-------
+## PyYAML
 
 PyYaml est une bibliothèque en Python permettant de gérer les fichiers YAML. On peut le télécharger sur le site [http://pyyaml.org/](http://pyyaml.org/) et l'on trouvera la [documentation sur cette page](http://pyyaml.org/wiki/PyYAML).
 
@@ -835,15 +476,7 @@ PyYaml peut utiliser [la LibYaml](http://pyyaml.org/wiki/LibYAML) écrite en C e
 
 Pour charger un fichier YAML, dont le nom est passé sur la ligne de commande, on pourra procéder somme suit :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import sys
-import yaml
-
-print yaml.load(open(sys.argv[1]))
-```
+```python/3.py```
 
 La fonction `load()` prend en paramètre une chaîne d'octets, unicode, un fichier binaire ou texte. Les chaînes d'octets et les fichiers doivent être encodés en *UTF-8* ou *UTF-16*. L'encoding est déterminé par le parser en examinant le BOM (Byte Order Mark), premier octet du fichier. Si aucun BOM n'est trouvé, l'*UTF-8* est choisi.
 
@@ -856,21 +489,7 @@ for document in yaml.load_all(documents):
 
 Pour sérialiser un objet Python en YAML, on pourra utiliser la fonction `yaml.dump()` :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-recette = {
-    'nom': 'sushi',
-    'ingredients': ['riz', 'vinaigre', 'sucre', 'sel', 'thon', 'saumon'],
-    'temps de cuisson': 10,
-    'difficulte': 'difficile'
-}
-
-print yaml.dump(recette)
-```
+```python/4.py```
 
 La fonction `yaml.dump()` peut prendre un deuxième paramètre optionel qui doit être un fichier binaire ou texte ouvert. Elle écrit alors le résultat de la sérialisation dans le fichier.
 
@@ -884,9 +503,7 @@ print yaml.dump(range(5), default_flow_style=True)
 
 Produit une représentation utilisant la notation en flux :
 
-```yaml
-[0, 1, 2, 3, 4]
-```
+```yaml/28.yml```
 
 Alors que le code :
 
@@ -896,40 +513,13 @@ print yaml.dump(range(5), default_flow_style=False)
 
 Produit une notation en liste :
 
-```yaml
-- 0
-- 1
-- 2
-- 3
-- 4
-```
+```yaml/29.yml```
 
 ### Sérialisation et désérialisation de classes Python
 
 Il est possible de déclarer explicitement le type Python à utiliser pour désérialiser une structure YAML donnée à l'aide d'un tag YAML. Par exemple :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Personne(object):
-
-    def __init__(self, nom, age):
-        self.nom = nom
-        self.age = age
-
-    def __repr__(self):
-        return "%s(nom=%r, age=%r)" % \
-               (self.__class__.__name__, self.nom, self.age)
-
-print yaml.load("""
-!!python/object:__main__.Personne
-nom: Robert
-age: 25
-""")
-```
+```python/5.py```
 
 Produit la sortie suivante dans le terminal :
 
@@ -939,24 +529,7 @@ Personne(nom='Robert', age=25)
 
 Inversement, une classe Python peut être sérialisée en un flux YAML de la manière suivante :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Personne(object):
-
-    def __init__(self, nom, age):
-        self.nom = nom
-        self.age = age
-
-    def __repr__(self):
-        return "%s(nom=%r, age=%r)" % \
-               (self.__class__.__name__, self.nom, self.age)
-
-print yaml.dump(Personne('Robert', 25), default_flow_style=False)
-```
+```python/6.py```
 
 Ce code produit la sortie suivante :
 
@@ -970,34 +543,11 @@ Nous voyons que PyYaml a sérialisé la classe Python en utilisant la même nota
 
 La notation vue ci-dessus permet de désérialiser des structures YAML en instances de classes Python arbitraires. Cependant, il est possible d'utiliser une notation plus simple en faisant hériter notre classe `Personne` du parent `yaml.YAMLObject` comme suit :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Personne(yaml.YAMLObject):
-
-    yaml_tag = '!personne'
-
-    def __init__(self, nom, age):
-        self.nom = nom
-        self.age = age
-
-    def __repr__(self):
-        return "%s(nom=%r, age=%r)" % \
-               (self.__class__.__name__, self.nom, self.age)
-
-print yaml.dump(Personne('Robert', 25), default_flow_style=False)
-```
+```python/7.py```
 
 Cela produit sur la console :
 
-```yaml
-!personne
-age: 25
-nom: Robert
-```
+```yaml/30.yml```
 
 Bien sûr, on peut désérialiser cette structure YAML en utilisant la fonction `yaml.load()`. Cependant, cette notation, qui comporte le tag YAML `!personne` est bien plus élégante que la précédente, qui indique la nom qualifié de la classe et non un nom symbolique plus court et plus parlant.
 
@@ -1005,8 +555,7 @@ Il y a un peu de magie derrière tout cela : la classe `Personne` s'enregistre e
 
 Il existe un moyen d'associer une expression rationnelle à une classe Python de manière à ce que, par exemple, la notation `3d6` soit associée à l'appel au constructeur `Dice(3, 6)`. Je vous laisse le soin de creuser la question [dans la section adéquate de la documentation de PyYaml](http://pyyaml.org/wiki/PyYAMLDocumentation#Constructorsrepresentersresolvers).
 
-Goyaml
-------
+## Goyaml
 
 [Goyaml](http://gopkg.in/yaml.v2) est une bibliothèque Go permettant de parser des fichiers YAML pour en injecter le contenu dans des structures définies par l'utilisateur. Cette méthode de parsing est généralisée en Go : elle est identique à celle du XML ou du JSON par exemple.
 
@@ -1022,10 +571,7 @@ $ go get gopkg.in/yaml.v2
 
 Supposons que nous souhaitions parser le fichier YAML suivant, qui représente un utilisateur :
 
-```yaml
-name: Robert
-age:  25
-```
+```yaml/31.yml```
 
 Je pourrais définir la structure suivante pour représenter cet utilisateur :
 
@@ -1046,18 +592,7 @@ Pour parser le fichier, il faut :
 
 Ainsi pour parser notre fichier d'utilisateur :
 
-```go
-var user User
-source, err := ioutil.ReadFile("user.yml")
-if err != nil {
-  panic(err)
-}
-err = yaml.Unmarshal(source, &user)
-if err != nil {
-  panic(err)
-}
-fmt.Printf("user: %v\n", user)
-```
+```go/1.go```
 
 Cette approche est très simple et répond à la plupart des cas d'usage du parsing YAML.
 
@@ -1084,23 +619,12 @@ La forme générale du tag est la suivante : `yaml:"[<key>][,<flag1>[,<flag2>]]"
 
 Il semble impossible de parser une fichier YAML quelconque avec la technique décrite ci-dessus, mais il n'en ai rien. En effet, il est possible d'écrire le code suivant :
 
-```go
-var thing interface{}
-source, err := ioutil.ReadFile("user.yml")
-if err != nil {
-  panic(err)
-}
-err = yaml.Unmarshal(source, &thing)
-if err != nil {
-  panic(err)
-}
-fmt.Printf("Thing: %#v\n", thing)
-```
+```go/2.go```
 
 Ce qui produit la sortie suivante :
 
 ```bash
-$ go run generic.go user.yml 
+$ go run generic.go user.yml
 Thing: map[interface {}]interface {}{"name":"Robert", "age":25}
 ```
 
@@ -1108,20 +632,17 @@ Comme `interface{}` désigne un type quelconque, on peut parser ainsi tout fichi
 
 On pourra voir un exemple de mise en œuvre de cette technique dans [mon projet NeON](http://github.com/c4s4/neon/). A noter que l'usage du package *reflect* est à réserver à des utilisateurs expérimentés du langage Go, sous peine d'en perdre la raison.
 
-Conclusion
-==========
+# Conclusion
 
 Maintenant que nous avons une bonne idée de ce qu'est YAML, nous pouvons le comparer à des technologies proches telles que JSON et XML.
 
-YAML et JSON
-------------
+## YAML et JSON
 
 Ces deux formats de représentation textuelle de données sont très proches, à tel point qu'à partir de la version *1.2* de la spécification YAML, tout document JSON est un document YAML valide (et peut donc être parsé par un parser YAML conforme à la version *1.2* de la spécification).
 
 Cependant, YAML bénéficie d'une plus grande lisibilité. D'autre part, il n'est pas lié à un langage de programmation particulier (comme l'est JSON avec JavaScript).
 
-YAML et XML
------------
+## YAML et XML
 
 Ces deux technologies sont assez différentes et YAML ne peut pas faire tout ce que peut faire XML. En particulier, YAML n'est pas adapté comme format de texte structuré, on ne pourrait donc pas remplacer XML par YAML pour écrire du DocBook par exemple.
 
@@ -1129,8 +650,7 @@ Par contre, dans le domaine de sérialisation de données, YAML est bien plus sp
 
 D'autre part, YAML possède un énorme avantage en ce qui concerne la syntaxe et sa lisibilité, même par une personne qui n'a pas connaissance des spécification YAML. Ainsi, dans le domaine des fichiers de configuration qui doivent être manipulés par des gens qui n'ont pas de connaissance particulière, la syntaxe naturelle de YAML est-elle un énorme avantage.
 
-Utilisation de YAML
--------------------
+## Utilisation de YAML
 
 Les deux utilisations principales de YAML sont :
 
@@ -1139,8 +659,7 @@ Les deux utilisations principales de YAML sont :
 
 J'espère que cette présentation de YAML vous aura donné l'envie d'utiliser ce format de données dans vos propres applications et de répandre la bonne parole autour de vous !
 
-Ressources
-==========
+# Ressources
 
 Voici quelques URLs utiles relatives à YAML :
 

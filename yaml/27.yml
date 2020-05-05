@@ -1,0 +1,9 @@
+minimalOutput: true
+indentAmount: "    "
+suppressWarnings: true
+encoding: "ISO-8859-1"
+transfers:
+  company: com.blah.Company
+  employee: com.blah.Employee
+handlers:
+  com.mycompany.MyFunkyObject: com.mycompany.jyaml.MyFunkyObjectWrapper

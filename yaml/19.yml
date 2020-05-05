@@ -1,0 +1,8 @@
+%TAG !people! tag:foo.org,2004:bar
+---
+- !people
+    first name: Omer
+    last name:  Simpson
+- !people
+    first name: Bart
+    last name:  Simpson

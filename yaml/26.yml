@@ -1,0 +1,11 @@
+- &rob
+  name: Robert
+  age:  55
+- &elo
+  name: Elodie
+  age:  52
+- name: Mickael
+  age:  31
+  parents:
+    - *rob
+    - *elo

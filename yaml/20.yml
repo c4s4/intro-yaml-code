@@ -1,0 +1,6 @@
+- !<tag:foo.org,2004:bar>
+    first name: Omer
+    last name:  Simpson
+- !<tag:foo.org,2004:bar>
+    first name: Bart
+    last name:  Simpson

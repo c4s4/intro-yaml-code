@@ -26,41 +26,21 @@ The name YAML means **YAML Ain't Markup Language**. If this immediately distance
 
 Specifically, we could note the list of ingredients for a breakfast as follows:
 
-```Yaml
-- croissants
-- chocolate breads
-- ham
-- eggs
-```
+```yaml/1.yml```
 
 This is a valid YAML file that represents a list of strings. To be convinced, we can write the following Python script that parses the file, whose name is passed on the command line, and displays the result:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import sys
-import yaml
-
-print yaml.load(open(sys.argv[1]))
-```
+```python/1.py```
 
 This script will produce the following result:
 
-```yaml
-['croissants', 'chocolate breads', 'ham', 'eggs']
-```
+```yaml/2.yml```
 
 Which means that the result of this parsing is a Python list containing the appropriate strings! The parser is therefore able to render *natural* data structures of the language used for parsing.
 
 Now let's write a countdown:
 
-```yaml
-- 3
-- 2
-- 1
-- 0
-```
+```yaml/3.yml```
 
 We obtain the following result:
 
@@ -72,12 +52,7 @@ This is always a list, but the parser has recognized each element as an integer 
 
 YAML can also recognize associative arrays, so we could note a breakfast order as follows:
 
-```yaml
-croissants: 30
-chocolate breads: 30
-ham: 0
-eggs: 0
-```
+```yaml/4.yml```
 
 Which will be loaded in the following way:
 
@@ -89,21 +64,7 @@ By combining the basic data types in YAML-recognized collections, almost any dat
 
 It is also possible to perform the reverse operation, namely to serialize data structures in memory as text. In the following example, we write on standard output a Python `Dictionary`:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-recipe = {
-    'name': 'sushi',
-    'ingredients': ['rice', 'vinegar', 'sugar', 'salt', 'tuna', 'salmon'],
-    'cooking time': 10,
-    'difficulty': 'difficult'
-}
-
-print yaml.dump(recipe)
-```
+```python/2.py```
 
 Which will produce the following output:
 
@@ -128,14 +89,7 @@ Scalars are the set of YAML types that are not collections (list or associative 
 
 Here is an example :
 
-```yaml
-- String
-- "3"
-- String on
-  a single line
-- "Double quotation marks\t"
-- 'Single quotation marks\t'
-```
+```yaml/5.yml```
 
 Which is parsed in the following way:
 
@@ -162,13 +116,7 @@ On the other hand, it is possible to write Unicode characters using the followin
 
 Here are some examples:
 
-```yaml
-canonical:   12345
-decimal:     +12_345
-sexagesimal: 3:25:45
-octal:       030071
-hexadecimal: 0x3039
-```
+```yaml/6.yml```
 
 Which is parsed in the following way:
 
@@ -183,14 +131,7 @@ Thus most common notations of programming languages ​​(such as octal or hexa
 
 Let's see the different notations for these numbers:
 
-```yaml
-canonical:         1.23015e+3
-exponential:       12.3015e+02
-sexagesimal:       20:30.15
-fixed:             1_230.15
-infinite negative: -.inf
-not a number:      .NaN
-```
+```yaml/7.yml```
 
 Which is parsed in:
 
@@ -206,12 +147,7 @@ Classical notations are handled as well as infinites and values ​​that are n
 
 YAML also recognizes dates:
 
-```yaml
-canonical: 2001-12-15T02:59:43.1Z
-iso8601:   2001-12-14t21:59:43.10-05:00
-space:     2001-12-14 21:59:43.10 -5
-date:      2002-12-14
-```
+```yaml/8.yml```
 
 Which are parsed in the following way:
 
@@ -228,16 +164,7 @@ The types resulting from the parsing depend on the language and the parser, but 
 
 There are other scalars recognized by YAML parsers:
 
-```yaml
-null: null
-null bis: ~
-true: true
-true bis: yes
-true ter: on
-false: false
-false bis: no
-false ter: off
-```
+```yaml/9.yml```
 
 Who will be parsed in:
 
@@ -257,21 +184,13 @@ There are two types of collections recognized by YAML: lists and associative arr
 
 These are ordered lists, and may contain several identical elements (as opposed to sets). The elements of a list are identified by a hyphen, as follows:
 
-```yaml
-- butter
-  croissants
-- chocolate breads
-- ham
-- eggs
-```
+```yaml/10.yml```
 
 The elements of the list are distinguished thanks to the indentation: the first element is identified so that its second line is recognized as part of the first element of the list. This syntax can be compared to that of Python, except that in YAML, **tab characters are strictly forbidden for indentation**. This last rule is important and causes many parsing errors. It is important to set its editor to prohibit tabs for indenting YAML files.
 
 There is an alternative notation for lists, similar to that of Python or Ruby languages:
 
-```yaml
-[croissants, chocolate breads, ham, eggs]
-```
+```yaml/11.yml```
 
 This notation, called *in flow*, is more compact and sometimes allows to gain readability or compactness.
 
@@ -279,18 +198,11 @@ This notation, called *in flow*, is more compact and sometimes allows to gain re
 
 Called *Maps* or *Dictionaries* in some languages, they associate a value with a key:
 
-```yaml
-croissants: 2
-chocolate breads: 1
-ham: 0
-eggs: 3
-```
+```yaml/12.yml```
 
 *Flow* notation is as follows:
 
-```yaml
-{croissants: 2, chocolate breads: 1, ham: 0, eggs: 3}
-```
+```yaml/13.yml```
 
 Which is parsed in the same way. This notation is identical to that of Python or Javascript and is similar to that used by Ruby. Note that Ruby 2 is also using this notation.
 
@@ -298,12 +210,7 @@ Which is parsed in the same way. This notation is identical to that of Python or
 
 It is possible to include comments in a document in the same way as in most scripting languages:
 
-```yaml
-# comment
-- Some text
-# other comment
-- Other text
-```
+```yaml/14.yml```
 
 Note that these comments must not (and can not) contain useful parsing information since they are not generally accessible to the parser client code.
 
@@ -311,14 +218,7 @@ Note that these comments must not (and can not) contain useful parsing informati
 
 In the same file or stream, you can insert several YAML documents afterwards, starting them with a line consisting of three dashes (`---`) and terminating them with a line of three dots (`...`) as in the example below:
 
-```yaml
----
-first document
-...
----
-second document
-...
-```
+```yaml/15.yml```
 
 Note that by default, YAML parsers wait for one document per file and may issue an error if they encounter more than one document. It is then necessary to use a particular function able to parse multiple documents (like `yaml.load_all()` for PyYaml for instance).
 
@@ -334,15 +234,7 @@ References
 
 YAML references are similar to pointers in programming languages. For instance:
 
-```yaml
-Monday:    &p 'potatoes'
-Tuesday:   *p
-Wednesday: *p
-Thursday:  *p
-Friday:    *p
-Saturday:  *p
-Sunday:    *p
-```
+```yaml/16.yml```
 
 Which gives while parsed:
 
@@ -355,27 +247,14 @@ Which gives while parsed:
 
 Note that an alias, indicated by an asterisk `*`, must point to a valid anchor, indicated by an ampersand `&`, otherwise it results in a parsing error. So the following file will cause an error during parsing:
 
-```yaml
-*foo
-```
+```yaml/17.yml```
 
 tags
 ----
 
 Tags are data types indicators. By default, it is not necessary to indicate the type of data that is deduced from their form. However, in some cases, it may be necessary to force the data type, and YAML defines following default types:
 
-```yaml
-null:    !!null
-integer: !!int    3
-float:   !!float  1.2
-string:  !!str    string
-boolean: !!bool   true
-binary:  !!binary dGVzdA==
-map:     !!map    { key: value }
-seq:     !!seq    [ element1, element2 ]
-set:     !!set    { element1, element2 }
-omap:    !!omap   [ key: value ]
-```
+```yaml/18.yml```
 
 Matching tags begin with two exclamation points. When parsing, we get following types in Python:
 
@@ -401,29 +280,13 @@ The usefulness of tags for these default types is limited. The real power of tag
 
 For instance, one could define his own type for people, with two fields: first name and last name. We must first declare the tag at the beginning of the document, then we can use it in the document, as in this example:
 
-```yaml
-%TAG !people! tag:foo.org,2004:bar
----
-- !people
-    first name: Omer
-    last name:  Simpson
-- !people
-    first name: Bart
-    last name:  Simpson
-```
+```yaml/19.yml```
 
 We will see later how to use tags with Java and Python APIs to deserialize YAML structures into custom data types.
 
 It is also possible not to declare the tag and to explain it in the document, as follows:
 
-```yaml
-- !<tag:foo.org,2004:bar>
-    first name: Omer
-    last name:  Simpson
-- !<tag:foo.org,2004:bar>
-    first name: Bart
-    last name:  Simpson
-```
+```yaml/20.yml```
 
 Directives
 ----------
@@ -438,11 +301,7 @@ As seen previously, declare a tag in the document.
 
 Indicates the YAML version of the document. Must be in the header of the document, as in the example below:
 
-```yaml
-%YAML 1.1
----
-test
-```
+```yaml/21.yml```
 
 A parser must refuse to process a document of a higher major version. For example, a parser in version `1.1` should refuse to parse a document in YAML version `2.0`. It should issue a warning if it is asked to parse a document of minor higher version, such as `1.2` for instance. It must parse without protesting all versions equal or inferior, such as `1.1` and `1.0`.
 
@@ -473,31 +332,11 @@ Object object = Yaml.load(new File("object.yml"));
 
 For instance, following file:
 
-```yaml
-- One
-- 2
-- { three: 3.0, four: true }
-```
+```yaml/22.yml```
 
 Can be loaded into memory and displayed in the terminal with following code:
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Load {
-    
-    public static void main(String [] args)
-        throws Exception {
-        String filename = "test/object.yml";
-        if (args.length>0) filename = args[0];
-        System.out.println(Yaml.load(new File(filename)));
-    }
-
-}
-```
+```java/1.java```
 
 This will print in the terminal:
 
@@ -513,43 +352,11 @@ Yaml.dump(object, new File("dump.yml"));
 
 Thus, we can serialize a Java object structure with following code:
 
-```java
-package jyaml;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.ho.yaml.Yaml;
-
-public class Dump {
-
-    public static void main(String [] args)
-        throws Exception {
-        List <Object> object = new ArrayList<Object>();
-        object.add("One");
-        object.add(2);
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("three", 3.0);
-        map.put("four", true);
-        object.add(map);
-        Yaml.dump(object, new File("test/dump.yml"));
-    }
-
-}
-```
+```java/2.java```
 
 This code will produce following file:
 
-```yaml
----
-- One
-- 2
-- !java.util.HashMap
-  four: true
-  three: !java.lang.Double 3.0
-```
+```yaml/23.yml```
 
 Note that this dump is a little disappointing because some standard types of YAML (such as associative arrays and floating point numbers) are serialized to Java types (such as `java.util.HashMap` and `java.lang. Double`). Such a file will not be loaded correctly using another programming language (or even another implementation in Java).
 
@@ -559,103 +366,15 @@ We can also work with types that are not generic and thus load instances of Java
 
 The first solution is to indicate the type of objects with YAML tags. Thus, the following YAML file:
 
-```yaml
---- !jyaml.Order
-id: test123
-Articles:
- - !jyaml.Article
-    id:       test456
-    price:    3.5
-    quantity: 1
- - !jyaml.Article
-    id:       test567
-    price:    2.0
-    quantity: 2
-```
+```yaml/24.yml```
 
 Will it be loaded using the following classes:
 
-```java
-package jyaml;
-
-public class Order {
-
-    private String id;
-    private Article[] articles;
-
-    public String getId() {
-        return id;
-    }
-    
-    public void setId(String id) {
-        this.id = id;
-    }
-    
-    public Article[] getArticles() {
-        return articles;
-    }
-    
-    public void setArticles(Article[] articles) {
-        this.articles = articles;
-    }
-    
-    public String toString() {
-        StringBuffer buffer = new StringBuffer("[Order id='")
-            .append (id)
-            .append ("', articles='");
-        for(int i=0; i<articles.length; i ++) {
-            Article Article = Articles[i];
-            buffer.append(article.toString());
-            if (i<articles.length-1) buffer.append(",");
-        }
-        buffer.append("]");
-        return buffer.toString();
-    }
-
-}
-```
+```java/3.java```
 
 And:
 
-```java
-package jyaml;
-
-public class Article {
-    
-    private String id;
-    private double price;
-    private int quantity;
-    
-    public String getId() {
-        return id;
-    }
-        
-    public void setId(String id) {
-        this.id = id;
-    }
-       
-    public double getPrice() {
-        return price;
-    }
-        
-    public void setPrice(double price) {
-        this.price = price;
-    }
-    
-    public int getQuantity() {
-        return quantity;
-    }
-    
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-        
-    public String toString () {
-        return "[Article id='"+id+"', price='"+price+"', quantity='"+quantity+"']";
-    }
-  
-}
-```
+```java/4.java```
 
 These classes respect the JavaBean convention, namely that they have accessors for its fields as well as an empty constructor (without arguments, implicit in Java). By loading it with the previous source, we get on the terminal:
 
@@ -669,35 +388,11 @@ These classes respect the JavaBean convention, namely that they have accessors f
 
 There is another way to load these objects without the need to explicitly specify types. To do this, use the `loadType()` method and pass it the YAML file to load as well as the type of the root object of the file. So, in our case, we could write the order file as follows:
 
-```yaml
-id: test123
-articles:
- - id:       test456
-   price:    3.5
-   quantity: 1
- - id:       test567
-   price:    2.0
-   quantity: 2
-```
+```yaml/25.yml```
 
 And load it with following source:
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Load2 {
-        
-    public static void main(String[] args)
-        throws Exception {
-        System.out.println(Yaml.loadType(new File("test/order2.yml"),
-                                         Order.class));
-    }
-
-}
-```
+```java/5.java```
 
 This way of loading specific types is much more convenient because it does not overload the YAML file with Java types, which makes the portability between languages impossible. However, we may regret the obligation to declare the `articles` field as an `Article` array. If declared as `List <Article>`, JYaml loads the objects in the list as instances of `Map`. However, this is because the list type information is lost in the runtime and therefore JYaml cannot know the type of items in the list and therefore loads them with the default type.
 
@@ -705,44 +400,11 @@ This way of loading specific types is much more convenient because it does not o
 
 JYaml handles aliases and anchors for YAML files. Let's consider following example:
 
-```yaml
-- &rob
-  name: Robert
-  age:  55
-- &elo
-  name: Elodie
-  age:  52
-- name: Mickael
-  age:  31
-  parents:
-    - *rob
-    - *elo
-```
+```yaml/26.yml```
 
 It can be loaded with following code:
 
-```java
-package jyaml;
-
-import java.io.File;
-import org.ho.yaml.Yaml;
-
-public class Alias ​​{
-    
-    public static void main(String[] args)
-        throws Exception {
-        People[] people = Yaml.loadType(new File("test/alias.yml"),
-                                        People[].class);
-        for (int i=0; i<people.length; i++) {
-            People individual = people[i];
-            System.out.println(individual);
-        }
-        // we test that references are identical
-        System.out.println("Anchor OK:"+(people[2].getParents()[0]==people[0]));
-    }
-
-}
-```
+```java/6.java```
 
 And we see that the aliases and anchors have been handled correctly.
 
@@ -791,17 +453,7 @@ for(Object object: Yaml.loadStream(input)) {
 
 It is possible to configure JYaml in a file, which must be named `jyaml.yml` and be in current directory where the application runs or at the root of its *CLASSPATH*. Here is an example of such a file:
 
-```yaml
-minimalOutput: true
-indentAmount: "    "
-suppressWarnings: true
-encoding: "ISO-8859-1"
-transfers:
-  company: com.blah.Company
-  employee: com.blah.Employee
-handlers:
-  com.mycompany.MyFunkyObject: com.mycompany.jyaml.MyFunkyObjectWrapper
-```
+```yaml/27.yml```
 
 This configuration makes it possible in particular to configure mappings between YAML tags and Java classes. In the example above, the following mapping:
 
@@ -835,15 +487,7 @@ PyYaml can use [LibYaml](http://pyyaml.org/wiki/LibYAML) written in C and very f
 
 To load a YAML file, whose name is passed on command line, we can proceed as follows:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import sys
-import yaml
-
-print yaml.load(open(sys.argv[1]))
-```
+```python/3.py```
 
 The `load()` function takes a string of bytes, unicode, binary or text as parameter. Byte strings and files must be encoded in *UTF-8* or *UTF-16*. Encoding is determined by the parser by examining the Byte Order Mark (BOM), the first byte of the file. If no BOM is found, *UTF-8* is chosen.
 
@@ -856,21 +500,7 @@ for document in yaml.load_all(documents):
 
 To serialize a Python object into YAML, we can use the `yaml.dump()` function:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-recipe = {
-    'name': 'sushi',
-    'ingredients': ['rice', 'vinegar', 'sugar', 'salt', 'tuna', 'salmon'],
-    'cooking time': 10,
-    'difficulty': 'difficult'
-}
-
-print yaml.dump(recipe)
-```
+```python/4.py```
 
 The `yaml.dump()` function can take a second optional parameter which must be a binary or open text file. It then writes the result of serialization to the file.
 
@@ -884,9 +514,7 @@ print yaml.dump(range(5), default_flow_style=True)
 
 Produces a representation using flow notation:
 
-```yaml
-[0, 1, 2, 3, 4]
-```
+```yaml/28.yml```
 
 While following code:
 
@@ -896,40 +524,13 @@ print yaml.dump(range (5), default_flow_style=False)
 
 Produces a list notation:
 
-```yaml
-- 0
-- 1
-- 2
-- 3
-- 4
-```
+```yaml/29.yml```
 
 ### Serialization and deserialization of Python classes
 
 It is possible to explicitly declare the Python type to be used to deserialize a given YAML structure using a YAML tag. For example :
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Person(object):
-
-    def __init __(self, name, age):
-        self.name = name
-        self.age = age
-
-    def __repr __(self):
-        return "%s(name=%r, age=%r)" % \
-               (self.__class__.__name__, self.name, self.age)
-
-print yaml.load ("""
-!!python/object: __main__.Person
-name: Robert
-age: 25
-""")
-```
+```python/5.py```
 
 Produces following output on the terminal:
 
@@ -939,24 +540,7 @@ Person(name='Robert', age=25)
 
 Conversely, a Python class can be serialized into a YAML stream as follows:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Person(object):
-
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def __repr__(self):
-        return "%s(name=%r, age=%r)" % \
-               (self .__class__.__name__, self.name, self.age)
-
-print yaml.dump(Person('Robert', 25), default_flow_style=False)
-```
+```python/6.py```
 
 This code produces following output:
 
@@ -970,34 +554,11 @@ We see that PyYaml serialized the Python class using the same YAML tag notation.
 
 The notation seen above allows to deserialize YAML structures into instances of arbitrary Python classes. However, it is possible to use a simpler notation by inheriting our `Person` class from the parent `yaml.YAMLObject` as follows:
 
-```python
-#!/usr/bin/env python
-# encoding: UTF-8
-
-import yaml
-
-class Person (yaml.YAMLObject):
-
-    yaml_tag = '!person'
-
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-    def __repr__(self):
-        return "%s(name=%r, age=%r)" % \
-               (self .__class__.__name__, self.name, self.age)
-
-print yaml.dump(Person('Robert', 25), default_flow_style=False)
-```
+```python/7.py```
 
 This produces on the console:
 
-```yaml
-!person
-age: 25
-name: Robert
-```
+```yaml/30.yml```
 
 Of course, we can deserialize this YAML structure by using the `yaml.load()` function. However, this notation, which has the YAML `!person` tag, is much more elegant than previous one, which indicates the qualified name of the class and not a shorter, more meaningful symbolic name.
 
@@ -1022,10 +583,7 @@ $ go get gopkg.in/yaml.v2
 
 Suppose we want to parse the following YAML file, which represents a user:
 
-```yaml
-name: Robert
-age:  25
-```
+```yaml/31.yml```
 
 I could define following structure to represent this user:
 
@@ -1046,18 +604,7 @@ To parse the file, you must:
 
 So to parse our user file:
 
-```go
-var user User
-source, err := ioutil.ReadFile("user.yml")
-if err != nil {
-  panic(err)
-}
-err = yaml.Unmarshal(source, &user)
-if err != nil {
-  panic(err)
-}
-fmt.Printf("user: %v\n", user)
-```
+```go/1.go```
 
 This approach is very simple and addresses most YAML parsing use cases.
 
@@ -1084,18 +631,7 @@ The general form of the tag is: `yaml:"[<key>][,<flag1>[,<flag2>]]`, where *key*
 
 It seems impossible to parse an abitrary YAML file with the technique described above, but it is false. Indeed, it is possible to write following code:
 
-```go
-var thing interface{}
-source, err := ioutil.ReadFile("user.yml")
-if err != nil {
-  panic(err)
-}
-err = yaml.Unmarshal(source, &thing)
-if err != nil {
-  panic(err)
-}
-fmt.Printf("Thing: %#v\n", thing)
-```
+```go/2.go```
 
 Which produces following output:
 

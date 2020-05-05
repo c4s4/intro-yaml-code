@@ -1,0 +1,8 @@
+id: test123
+articles:
+ - id:       test456
+   price:    3.5
+   quantity: 1
+ - id:       test567
+   price:    2.0
+   quantity: 2

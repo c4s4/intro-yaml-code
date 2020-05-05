@@ -1,0 +1,10 @@
+null:     !!null
+integer:  !!int    3
+float:    !!float  1.2
+string:   !!str    string
+boolean:  !!bool   true
+binary:   !!binary dGVzdA==
+map:      !!map    { key: value }
+seq:      !!seq    [ element1, element2 ]
+ensemble: !!set    { element1, element2 }
+omap:     !!omap   [ key: value ]

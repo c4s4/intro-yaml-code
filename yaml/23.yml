@@ -1,0 +1,6 @@
+---
+- One
+- 2
+- !java.util.HashMap
+  four:  true
+  three: !java.lang.Double 3.0
